@@ -1,0 +1,155 @@
+/* src/styles.css
+   Design tokens + global resets for the portfolio.
+   Tailwind v4 is CSS-first: theme values are declared here via @theme and
+   become both var(--amber) and Tailwind utilities (bg-amber, text-amber, etc.)
+   automatically. No separate tailwind.config.js color block needed. */
+
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+/* ---------- design tokens ---------- */
+@theme {
+  --color-ink: #12151a;
+  --color-ink-2: #181d24;
+  --color-ink-3: #232933;
+  --color-line: #2b323c;
+  --color-paper: #ecedea;
+  --color-paper-dim: #8f97a3;
+  --color-amber: #f2a83c;
+  --color-amber-dim: #8a6a34;
+  --color-teal: #4fd1c5;
+
+  --font-display: "Big Shoulders Display", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --radius-token: 2px;
+}
+
+/* Also expose as plain custom properties for non-Tailwind consumers
+   (three.js material colors, inline styles, GSAP targets, etc.) */
+:root {
+  --ink: var(--color-ink);
+  --ink-2: var(--color-ink-2);
+  --ink-3: var(--color-ink-3);
+  --line: var(--color-line);
+  --paper: var(--color-paper);
+  --paper-dim: var(--color-paper-dim);
+  --amber: var(--color-amber);
+  --amber-dim: var(--color-amber-dim);
+  --teal: var(--color-teal);
+}
+
+/* ---------- resets ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis owns smooth scrolling; keep native behavior neutral */
+}
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* cursor:none is applied conditionally by the Cursor component (only when
+   it actually mounts — i.e. not on touch devices), not globally here. */
+body[data-custom-cursor="true"] {
+  cursor: none;
+}
+body[data-custom-cursor="true"] a,
+body[data-custom-cursor="true"] button,
+body[data-custom-cursor="true"] [data-hover] {
+  cursor: none;
+}
+
+::selection {
+  background: var(--amber);
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-weight: 800;
+  line-height: 0.92;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* ---------- focus states ---------- */
+/* Custom cursor must never remove the native focus ring — keyboard users
+   still need it. Style it to match the design system instead of hiding it. */
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- section rhythm ---------- */
+/* Shared vertical rhythm for the one-page layout. Individual sections can
+   still override via Tailwind classes; these are sane page-wide defaults. */
+section {
+  position: relative;
+  padding-block: 150px;
+  border-bottom: 1px solid var(--line);
+}
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+@media (max-width: 720px) {
+  section {
+    padding-block: 96px;
+  }
+}
+
+/* ---------- reveal animation classes ---------- */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
