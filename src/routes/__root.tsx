@@ -13,6 +13,7 @@ import { LenisProvider } from "@/hooks/use-lenis";
 import { LetterLink } from "@/components/letter-link";
 import { StageCanvas } from "@/components/stage-canvas";
 import { brand } from "@/lib/content";
+import { Analytics } from "@vercel/analytics/react";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -56,6 +57,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <Header />
           {children}
         </LenisProvider>
+        <Analytics />
         <Scripts />
       </body>
     </html>
