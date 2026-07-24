@@ -9,24 +9,31 @@
 
 /* ---------- design tokens ---------- */
 @theme {
-  /* Stage colors — near-black, not flat navy */
-  --color-bg-stage: #0A0B0D;
-  --color-bg-stage-alt: #0D0F12;
+  /* Page surface — warm ivory, not flat white. Alt is a hair darker for
+     the alternating section rhythm below. */
+  --color-bg-stage: #F7F3EA;
+  --color-bg-stage-alt: #EFE8D8;
 
-  /* Surface / ink colors */
-  --color-ink: #0A0B0D;
-  --color-ink-2: #111316;
-  --color-ink-3: #1A1D22;
-  --color-line: #242830;
+  /* Elevated surfaces (cards, panels) — near-white, sits just above the
+     page surface. ink-3 is the most elevated / most contrast. */
+  --color-ink: #14110C;
+  --color-ink-2: #FCFAF5;
+  --color-ink-3: #F2ECDE;
+  --color-line: rgba(20, 17, 12, 0.14);
 
-  /* Text colors */
-  --color-paper: #F3F1EC;
-  --color-paper-dim: #8f97a3;
+  /* Text colors — near-black ink on the ivory page */
+  --color-paper: #16130E;
+  --color-paper-dim: #625B4C;
 
-  /* Accents */
-  --color-amber: #f2a83c;
-  --color-amber-dim: #8a6a34;
-  --color-teal: #4fd1c5;
+  /* Accents — deepened so they still hold contrast against a light page */
+  --color-amber: #B5541C;
+  --color-amber-dim: #E8C7A8;
+  --color-teal: #0E7A72;
+
+  /* A stable bright neutral for anything that sits *on* a dark chip
+     (buttons, cursor dot) — independent of the page-background tokens
+     above, so it stays put no matter the theme. */
+  --color-cream: #F7F3EA;
 
   /* Typography */
   --font-display: "Playfair Display", Georgia, serif;
@@ -51,6 +58,7 @@
   --amber: var(--color-amber);
   --amber-dim: var(--color-amber-dim);
   --teal: var(--color-teal);
+  --cream: var(--color-cream);
 
   /* ---- Type scale ---- */
   --text-label: 0.6875rem;      /* 11px */

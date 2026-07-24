@@ -1,12 +1,19 @@
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment } from "@react-three/drei";
 import * as THREE from "three";
 
 /**
  * Inner canvas component — separated from stage-canvas.tsx so the
  * @react-three/fiber imports are never touched during SSR.
  * This file is dynamically imported by StageCanvas on the client only.
+ *
+ * NOTE: this used to include <Environment preset="night" /> from drei,
+ * which fetches an HDR image from a remote CDN for reflections. If that
+ * fetch is slow/blocked (flaky network, ad-blocker, corporate proxy),
+ * the Suspense boundary around this whole component (in stage-canvas.tsx)
+ * falls back to `null` and never recovers — which is exactly the
+ * "renders for half a second then disappears forever" bug. Removed in
+ * favor of a small local light rig so there's zero network dependency.
  */
 
 function StageObject() {
@@ -17,10 +24,9 @@ function StageObject() {
   const material = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#1a1d22"),
-        metalness: 0.88,
-        roughness: 0.12,
-        envMapIntensity: 1.2,
+        color: new THREE.Color("#171512"),
+        metalness: 0.5,
+        roughness: 0.35,
       }),
     [],
   );
@@ -86,19 +92,30 @@ function SceneContents() {
         intensity={2.5}
         color="#f8f0e3"
       />
-      {/* Subtle fill from below-left to prevent total blackout on underside */}
+      {/* Subtle warm fill from below-left to prevent total blackout on underside */}
       <directionalLight
         position={[-3, -4, 2]}
         intensity={0.3}
-        color="#4fd1c5"
+        color="#e8ddc8"
       />
-      {/* Very dim ambient so the dark side isn't pure black */}
-      <ambientLight intensity={0.08} />
+      {/* Rim light from behind-left for a reflective edge, standing in
+          for what the HDR environment map used to provide */}
+      <directionalLight
+        position={[-6, 2, -4]}
+        intensity={1.1}
+        color="#ffffff"
+      />
+      {/* Soft top-down fill, warm cream bounce from "below" */}
+      <hemisphereLight
+        color="#ffffff"
+        groundColor="#F7F3EA"
+        intensity={0.45}
+      />
+      {/* Slightly higher ambient so the object never reads as a black hole
+          against the light page */}
+      <ambientLight intensity={0.18} />
 
       <StageObject />
-
-      {/* Environment map for metallic reflections */}
-      <Environment preset="night" />
     </>
   );
 }
@@ -120,8 +137,8 @@ export function StageCanvasInner() {
     >
       <Canvas
         dpr={[1, 1.5]}
-        gl={{ alpha: false, antialias: true, powerPreference: "high-performance" }}
-        style={{ background: "#0A0B0D" }}
+        gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
+        style={{ background: "transparent" }}
         camera={{ fov: 50 }}
       >
         <SceneContents />

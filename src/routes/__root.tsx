@@ -126,8 +126,8 @@ function Header() {
           className="text-[11px] tracking-[0.15em] uppercase font-semibold px-5 py-2.5 rounded-full transition-transform duration-200 hover:scale-105"
           style={{
             fontFamily: "var(--font-mono)",
-            background: "var(--paper)",
-            color: "var(--ink)",
+            background: "var(--ink)",
+            color: "var(--cream)",
           }}
         >
           Contact

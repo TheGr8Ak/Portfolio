@@ -126,7 +126,7 @@ export function Cursor() {
         width: size,
         height: size,
         borderRadius: "50%",
-        background: hovering ? "var(--amber)" : "var(--paper)",
+        background: hovering ? "var(--amber)" : "var(--cream)",
         mixBlendMode: "difference",
         pointerEvents: "none",
         zIndex: 9999,
