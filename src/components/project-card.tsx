@@ -7,6 +7,9 @@ import type { Project } from "@/lib/content";
  *
  * Uses CSS :hover + clip-path transition (not GSAP) since it's a discrete
  * hover state, not scroll-driven.
+ *
+ * Typography: index numeral in condensed sans, title in serif display,
+ * tags in mono label style.
  */
 export function ProjectCard({
   num,
@@ -19,35 +22,39 @@ export function ProjectCard({
     <div className="card group relative overflow-hidden" data-hover>
       {/* Base card content */}
       <div
-        className="relative z-0 flex h-full flex-col p-6 md:p-8"
+        className="relative z-0 flex h-full flex-col"
         style={{
-          background: "var(--ink-2)",
+          padding: "var(--space-4)",
+          background: "color-mix(in srgb, var(--ink-2) 80%, transparent)",
           border: "1px solid var(--line)",
           borderRadius: "var(--radius-token)",
           minHeight: 320,
         }}
       >
-        {/* Index number */}
+        {/* Index number — condensed sans */}
         <span
-          className="text-[64px] md:text-[80px] leading-none mb-4"
+          className="text-numeral"
           style={{
-            fontFamily: "var(--font-display)",
+            fontSize: "clamp(4rem, 5vw, 5rem)",
             color: "var(--ink-3)",
-            lineHeight: 0.8,
+            opacity: 0.6,
+            marginBottom: "var(--space-2)",
           }}
           aria-hidden="true"
         >
           {num}
         </span>
 
-        {/* Title */}
+        {/* Title — serif display */}
         <h3
-          className="text-xl md:text-2xl mb-3"
           style={{
             fontFamily: "var(--font-display)",
+            fontSize: "var(--text-h3)",
             color: "var(--paper)",
-            lineHeight: 1,
-            textTransform: "uppercase",
+            lineHeight: 1.1,
+            letterSpacing: "-0.01em",
+            fontWeight: 800,
+            marginBottom: "var(--space-2)",
           }}
         >
           {title}
@@ -55,8 +62,13 @@ export function ProjectCard({
 
         {/* Description */}
         <p
-          className="text-sm mb-6 flex-1"
-          style={{ color: "var(--paper-dim)", lineHeight: 1.6 }}
+          className="flex-1"
+          style={{
+            color: "var(--paper-dim)",
+            fontSize: "0.875rem",
+            lineHeight: 1.7,
+            marginBottom: "var(--space-3)",
+          }}
         >
           {description}
         </p>
@@ -66,12 +78,14 @@ export function ProjectCard({
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-block px-2 py-0.5 text-[10px] tracking-wider uppercase"
+              className="text-label inline-block"
               style={{
-                fontFamily: "var(--font-mono)",
-                background: "var(--ink-3)",
+                padding: "4px 8px",
+                background: "color-mix(in srgb, var(--ink-3) 80%, transparent)",
                 color: "var(--paper-dim)",
                 borderRadius: "var(--radius-token)",
+                fontSize: "10px",
+                letterSpacing: "0.12em",
               }}
             >
               {tag}
@@ -82,42 +96,45 @@ export function ProjectCard({
 
       {/* Spec-sheet hover overlay */}
       <div
-        className="absolute inset-0 z-10 flex flex-col justify-center p-6 md:p-8 transition-[clip-path] duration-[600ms] ease-out"
+        className="absolute inset-0 z-10 flex flex-col justify-center transition-[clip-path] duration-[600ms] ease-out"
         style={{
+          padding: "var(--space-4)",
           background: "var(--amber)",
           clipPath: "circle(0% at 88% 12%)",
           borderRadius: "var(--radius-token)",
         }}
-        // CSS hover transition via group-hover
         aria-hidden="true"
       >
         <h4
-          className="text-lg mb-6 uppercase"
           style={{
             fontFamily: "var(--font-display)",
+            fontSize: "1.25rem",
             color: "var(--ink)",
             fontWeight: 800,
+            letterSpacing: "-0.01em",
+            marginBottom: "var(--space-3)",
           }}
         >
           Spec Sheet
         </h4>
-        <dl className="grid gap-3">
+        <dl style={{ display: "grid", gap: "var(--space-1)" }}>
           {Object.entries(spec).map(([key, val]) => (
             <div key={key} className="flex justify-between gap-4">
               <dt
-                className="text-[11px] uppercase tracking-wider"
+                className="text-label"
                 style={{
-                  fontFamily: "var(--font-mono)",
                   color: "var(--ink)",
                   opacity: 0.7,
+                  fontSize: "0.6875rem",
                 }}
               >
                 {key}
               </dt>
               <dd
-                className="text-[13px] text-right"
+                className="text-right"
                 style={{
                   fontFamily: "var(--font-mono)",
+                  fontSize: "0.8125rem",
                   color: "var(--ink)",
                   fontWeight: 600,
                 }}

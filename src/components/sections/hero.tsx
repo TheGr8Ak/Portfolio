@@ -1,47 +1,129 @@
-import { lazy, Suspense } from "react";
+import { useEffect, useRef } from "react";
 import { hero } from "@/lib/content";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
-
-const HeroScene = lazy(() =>
-  import("@/components/hero-scene").then((m) => ({ default: m.HeroScene })),
-);
+import { ScrollCue } from "@/components/scroll-cue";
 
 /**
  * Hero section — name, role line, tagline, 4 stat callouts.
- * The R3F scene is lazy-loaded with React.lazy + Suspense. The fallback
- * is the hero itself without the 3D layer (no spinner, no layout shift),
- * since the hero reads as complete pure typography without the wireframe.
+ * The 3D backdrop is now provided by the global StageCanvas in the root
+ * layout. This section adds ambient glow blobs on top for warmth.
  */
 export function Hero() {
   const reduced = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Pointer-tracked ambient spotlight
+  useEffect(() => {
+    if (reduced) return;
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const onMove = (e: PointerEvent) => {
+      const rect = el.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      el.style.setProperty("--mx", `${x}%`);
+      el.style.setProperty("--my", `${y}%`);
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [reduced]);
 
   return (
     <section
+      ref={sectionRef}
       id="hero"
       className="relative flex items-center min-h-screen overflow-hidden"
-      style={{ paddingBlock: 0 }}
+      style={{
+        paddingBlock: 0,
+        background: "transparent",
+        // @ts-expect-error -- custom property, not a typed CSS key
+        "--mx": "50%",
+        "--my": "40%",
+      }}
     >
-      {/* R3F backdrop — lazy loaded, skipped under reduced motion */}
-      {!reduced && (
-        <Suspense fallback={null}>
-          <HeroScene />
-        </Suspense>
-      )}
+      {/* Ambient glow blobs — pointer-tracked + fixed ember */}
+      <div
+        className="absolute inset-0 z-[1]"
+        aria-hidden="true"
+        style={{
+          pointerEvents: "none",
+          background:
+            "radial-gradient(480px circle at var(--mx) var(--my), color-mix(in srgb, var(--amber) 12%, transparent), transparent 70%)",
+          transition: "background 0.15s linear",
+        }}
+      />
+      <div
+        className="absolute z-[1]"
+        aria-hidden="true"
+        style={{
+          pointerEvents: "none",
+          left: "50%",
+          bottom: "-20%",
+          width: "60vw",
+          height: "60vw",
+          maxWidth: 900,
+          maxHeight: 900,
+          transform: "translateX(-50%)",
+          background:
+            "radial-gradient(closest-side, color-mix(in srgb, var(--teal) 8%, transparent), transparent 75%)",
+        }}
+      />
 
       {/* Content overlay */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-20 py-32">
-        {/* Name */}
+      <div
+        className="relative z-10 w-full container-section"
+        style={{ paddingBlock: "var(--space-16)" }}
+      >
+        {/* Status badge */}
+        <span
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
+          style={{
+            marginBottom: "var(--space-5)",
+            border: "1px solid var(--line)",
+            background: "color-mix(in srgb, var(--bg-stage) 80%, transparent)",
+          }}
+        >
+          <span
+            className="block rounded-full"
+            style={{
+              width: 6,
+              height: 6,
+              background: "var(--amber)",
+              boxShadow: "0 0 8px var(--amber)",
+            }}
+          />
+          <span
+            className="text-label"
+            style={{ color: "var(--paper-dim)", fontSize: "10px" }}
+          >
+            Open to roles &middot; 2026 grad
+          </span>
+        </span>
+
+        {/* Name — serif display at top of the h1 scale */}
         <h1
-          className="text-6xl sm:text-7xl md:text-8xl lg:text-[120px] xl:text-[150px] mb-6"
           style={{
             fontFamily: "var(--font-display)",
+            fontSize: "var(--text-h1)",
             lineHeight: 0.88,
+            letterSpacing: "-0.02em",
             fontWeight: 900,
             color: "var(--paper)",
+            marginBottom: "var(--space-4)",
           }}
         >
           {hero.name.map((word, i) => (
-            <span key={i} className="block">
+            <span
+              key={i}
+              className="block"
+              style={
+                i === 1
+                  ? { color: "var(--amber)", marginTop: "-0.04em" }
+                  : undefined
+              }
+            >
               {word}
             </span>
           ))}
@@ -49,10 +131,11 @@ export function Hero() {
 
         {/* Role line */}
         <p
-          className="text-[11px] sm:text-xs tracking-[0.25em] mb-6"
+          className="text-label"
           style={{
-            fontFamily: "var(--font-mono)",
             color: "var(--amber)",
+            letterSpacing: "0.25em",
+            marginBottom: "var(--space-3)",
           }}
         >
           {hero.role}
@@ -60,35 +143,40 @@ export function Hero() {
 
         {/* Tagline */}
         <p
-          className="max-w-xl text-sm md:text-base mb-12"
+          className="max-w-xl"
           style={{
             color: "var(--paper-dim)",
             lineHeight: 1.7,
+            fontSize: "var(--text-body)",
+            marginBottom: "var(--space-8)",
           }}
         >
           {hero.tagline}
         </p>
 
-        {/* Stat callouts */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        {/* Stat callouts — tightened to 8px grid, equal columns */}
+        <div
+          className="grid grid-cols-2 md:grid-cols-4"
+          style={{ gap: "var(--space-4)" }}
+        >
           {hero.stats.map((stat) => (
             <div key={stat.l}>
               <span
-                className="block text-3xl md:text-4xl mb-1"
+                className="text-numeral block"
                 style={{
-                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(2rem, 3.5vw, 3rem)",
                   color: "var(--amber)",
-                  fontWeight: 800,
-                  lineHeight: 1,
+                  marginBottom: "var(--space-1)",
                 }}
               >
                 {stat.n}
               </span>
               <span
-                className="text-[10px] tracking-[0.15em] uppercase"
+                className="text-label"
                 style={{
-                  fontFamily: "var(--font-mono)",
                   color: "var(--paper-dim)",
+                  fontSize: "10px",
+                  letterSpacing: "0.15em",
                 }}
               >
                 {stat.l}
@@ -99,25 +187,8 @@ export function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        aria-hidden="true"
-      >
-        <span
-          className="text-[10px] tracking-[0.2em] uppercase"
-          style={{
-            fontFamily: "var(--font-mono)",
-            color: "var(--paper-dim)",
-          }}
-        >
-          Scroll
-        </span>
-        <div
-          className="w-px h-8"
-          style={{
-            background: "linear-gradient(to bottom, var(--paper-dim), transparent)",
-          }}
-        />
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
+        <ScrollCue />
       </div>
     </section>
   );

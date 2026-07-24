@@ -1,21 +1,27 @@
 import { education, certifications } from "@/lib/content";
 import { SectionHead } from "@/components/section-head";
 import { useReveal } from "@/hooks/use-reveal";
+import { SectionGlow } from "@/components/section-glow";
 
 /**
- * Grid section — education list + certifications list in a 2-column layout.
+ * Grid section — education list + certifications list in a 2-column layout
+ * with shared baseline alignment. Uses consistent serif display and token spacing.
  */
 export function Grid() {
   return (
-    <section id="grid">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-20">
+    <section id="grid" style={{ background: "transparent" }}>
+      <SectionGlow index={6} />
+      <div className="container-section relative z-[2]">
         <SectionHead
           eyebrow="06 / GRID"
           heading={["Formation", "history."]}
           index="06"
         />
 
-        <div className="grid md:grid-cols-2 gap-12 md:gap-16">
+        <div
+          className="grid md:grid-cols-2"
+          style={{ gap: "var(--space-8)" }}
+        >
           {/* Education */}
           <EducationList />
           {/* Certifications */}
@@ -32,51 +38,65 @@ function EducationList() {
   return (
     <div ref={ref}>
       <h3
-        className="text-[11px] tracking-[0.2em] uppercase mb-6"
+        className="text-label"
         style={{
-          fontFamily: "var(--font-mono)",
           color: "var(--amber)",
+          marginBottom: "var(--space-3)",
         }}
       >
         Education
       </h3>
 
-      <div className="space-y-6">
+      {/* Accent vertical bar — intentional Vogue-style graphic rule */}
+      <div
+        style={{
+          borderLeft: "2px solid var(--amber)",
+          paddingLeft: "var(--space-3)",
+          display: "grid",
+          gap: "var(--space-3)",
+        }}
+      >
         {education.map((edu) => (
           <div
             key={edu.school}
-            className="pb-6"
-            style={{ borderBottom: "1px solid var(--line)" }}
+            style={{
+              paddingBottom: "var(--space-3)",
+              borderBottom: "1px solid var(--line)",
+            }}
           >
-            <div className="flex justify-between items-start gap-4 mb-1">
+            <div
+              className="flex justify-between items-start"
+              style={{ gap: "var(--space-2)", marginBottom: "4px" }}
+            >
               <h4
-                className="text-base md:text-lg"
                 style={{
                   fontFamily: "var(--font-display)",
-                  textTransform: "uppercase",
+                  fontSize: "1.125rem",
                   color: "var(--paper)",
                   fontWeight: 800,
                   lineHeight: 1.1,
+                  letterSpacing: "-0.01em",
                 }}
               >
                 {edu.school}
               </h4>
               <span
-                className="text-[13px] whitespace-nowrap"
                 style={{
                   fontFamily: "var(--font-mono)",
+                  fontSize: "0.8125rem",
                   color: "var(--amber)",
                   fontWeight: 600,
+                  whiteSpace: "nowrap",
                 }}
               >
                 {edu.score}
               </span>
             </div>
             <p
-              className="text-[12px]"
+              className="text-label"
               style={{
-                fontFamily: "var(--font-mono)",
                 color: "var(--paper-dim)",
+                fontSize: "0.75rem",
               }}
             >
               {edu.sub}
@@ -94,33 +114,47 @@ function CertificationList() {
   return (
     <div ref={ref}>
       <h3
-        className="text-[11px] tracking-[0.2em] uppercase mb-6"
+        className="text-label"
         style={{
-          fontFamily: "var(--font-mono)",
           color: "var(--amber)",
+          marginBottom: "var(--space-3)",
         }}
       >
         Certifications
       </h3>
 
-      <div className="space-y-4">
+      {/* Matching accent rule for visual alignment with Education column */}
+      <div
+        style={{
+          borderLeft: "2px solid var(--teal)",
+          paddingLeft: "var(--space-3)",
+          display: "grid",
+          gap: "var(--space-2)",
+        }}
+      >
         {certifications.map((cert, i) => (
           <div
             key={`${cert.name}-${i}`}
-            className="flex justify-between items-baseline gap-4 pb-3"
-            style={{ borderBottom: "1px solid var(--line)" }}
+            className="flex justify-between items-baseline"
+            style={{
+              gap: "var(--space-2)",
+              paddingBottom: "var(--space-1)",
+              borderBottom: "1px solid var(--line)",
+            }}
           >
             <span
-              className="text-sm"
-              style={{ color: "var(--paper)" }}
+              style={{
+                color: "var(--paper)",
+                fontSize: "0.875rem",
+              }}
             >
               {cert.name}
             </span>
             <span
-              className="text-[11px] tracking-wider uppercase whitespace-nowrap"
+              className="text-label whitespace-nowrap"
               style={{
-                fontFamily: "var(--font-mono)",
                 color: "var(--paper-dim)",
+                fontSize: "0.6875rem",
               }}
             >
               {cert.by}

@@ -8,8 +8,10 @@ import appCss from "../styles.css?url";
 import { Cursor } from "@/components/cursor";
 import { ProgressBar } from "@/components/progress-bar";
 import { SectorRail } from "@/components/sector-rail";
+import { CornerFrame } from "@/components/corner-frame";
 import { LenisProvider } from "@/hooks/use-lenis";
 import { LetterLink } from "@/components/letter-link";
+import { StageCanvas } from "@/components/stage-canvas";
 import { brand } from "@/lib/content";
 
 export const Route = createRootRoute({
@@ -45,8 +47,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <LenisProvider>
+          {/* Site-wide 3D backdrop — fixed behind all content */}
+          <StageCanvas />
           <Cursor />
           <ProgressBar />
+          <CornerFrame />
           <SectorRail />
           <Header />
           {children}
@@ -60,10 +65,19 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 /**
  * Minimal top header — brand mark on the left, 3 letter-link nav items
  * on the right (pointing to in-page anchors). Visible on all breakpoints.
+ * Semi-transparent backdrop so it remains readable over the 3D canvas.
  */
 function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-12 lg:px-20 py-5">
+    <header
+      className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-12 lg:px-20 py-5"
+      style={{
+        background: "color-mix(in srgb, var(--bg-stage) 80%, transparent)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid color-mix(in srgb, var(--line) 40%, transparent)",
+      }}
+    >
       {/* Brand */}
       <a
         href="#hero"
@@ -74,7 +88,7 @@ function Header() {
         <span
           className="text-lg font-bold"
           style={{
-            fontFamily: "var(--font-display)",
+            fontFamily: "var(--font-condensed)",
             color: "var(--paper)",
           }}
         >
@@ -100,12 +114,25 @@ function Header() {
         </span>
       </a>
 
-      {/* Nav links */}
-      <nav className="flex items-center gap-6" aria-label="Primary navigation">
-        <LetterLink href="#experience" label="Track Record" />
-        <LetterLink href="#projects" label="Garage" />
-        <LetterLink href="#contact" label="Pit Lane" />
-      </nav>
+      {/* Nav links + CTA pill */}
+      <div className="flex items-center gap-8">
+        <nav className="hidden sm:flex items-center gap-6" aria-label="Primary navigation">
+          <LetterLink href="#experience" label="Track Record" />
+          <LetterLink href="#projects" label="Garage" />
+        </nav>
+        <a
+          href="#contact"
+          data-hover
+          className="text-[11px] tracking-[0.15em] uppercase font-semibold px-5 py-2.5 rounded-full transition-transform duration-200 hover:scale-105"
+          style={{
+            fontFamily: "var(--font-mono)",
+            background: "var(--paper)",
+            color: "var(--ink)",
+          }}
+        >
+          Contact
+        </a>
+      </div>
     </header>
   );
 }

@@ -9,18 +9,19 @@ interface SectionHeadProps {
 
 /**
  * Section heading wrapper — eyebrow label + H2 + optional index,
- * wrapped in the wipe-curtain reveal animation.
+ * wrapped in the wipe-curtain reveal animation. Serif display font
+ * for headings, tracked mono for the eyebrow.
  */
 export function SectionHead({ eyebrow, heading, index }: SectionHeadProps) {
   return (
     <WipeCurtain>
-      <div className="mb-12 md:mb-16">
+      <div style={{ marginBottom: "var(--space-8)" }}>
         {/* Eyebrow */}
         <p
-          className="mb-4 text-[11px] tracking-[0.2em] uppercase"
+          className="text-label"
           style={{
-            fontFamily: "var(--font-mono)",
             color: "var(--paper-dim)",
+            marginBottom: "var(--space-2)",
           }}
         >
           {eyebrow}
@@ -29,11 +30,13 @@ export function SectionHead({ eyebrow, heading, index }: SectionHeadProps) {
         {/* Heading */}
         <div className="flex items-end gap-6">
           <h2
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
             style={{
               fontFamily: "var(--font-display)",
+              fontSize: "var(--text-h2)",
               color: "var(--paper)",
-              lineHeight: 0.92,
+              lineHeight: 0.95,
+              letterSpacing: "-0.02em",
+              fontWeight: 800,
             }}
           >
             {heading.map((line, i) => (
@@ -45,11 +48,13 @@ export function SectionHead({ eyebrow, heading, index }: SectionHeadProps) {
 
           {index && (
             <span
-              className="hidden md:block text-[80px] lg:text-[120px] leading-none"
+              className="hidden md:block"
               style={{
-                fontFamily: "var(--font-display)",
+                fontFamily: "var(--font-condensed)",
+                fontSize: "clamp(5rem, 8vw, 7.5rem)",
                 color: "var(--ink-3)",
                 lineHeight: 0.8,
+                opacity: 0.6,
               }}
               aria-hidden="true"
             >

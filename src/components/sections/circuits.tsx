@@ -1,6 +1,7 @@
 import { hackathons } from "@/lib/content";
 import { SectionHead } from "@/components/section-head";
 import { useReveal } from "@/hooks/use-reveal";
+import { SectionGlow } from "@/components/section-glow";
 
 /**
  * Circuits section — hackathon entries. Each row shows the hackathon
@@ -8,15 +9,16 @@ import { useReveal } from "@/hooks/use-reveal";
  */
 export function Circuits() {
   return (
-    <section id="circuits">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-20">
+    <section id="circuits" style={{ background: "transparent" }}>
+      <SectionGlow index={4} />
+      <div className="container-section relative z-[2]">
         <SectionHead
           eyebrow="04 / CIRCUITS"
           heading={["Race-day", "proving grounds."]}
           index="04"
         />
 
-        <div className="space-y-6">
+        <div style={{ display: "grid", gap: "var(--space-3)" }}>
           {hackathons.map((hack) => (
             <HackathonRow key={hack.name} {...hack} />
           ))}
@@ -40,42 +42,50 @@ function HackathonRow({
   return (
     <div
       ref={ref}
-      className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6"
+      className="flex flex-col md:flex-row md:items-center justify-between"
       style={{
-        background: "var(--ink-2)",
+        gap: "var(--space-2)",
+        padding: "var(--space-3)",
+        background: "color-mix(in srgb, var(--ink-2) 80%, transparent)",
         border: "1px solid var(--line)",
         borderRadius: "var(--radius-token)",
       }}
     >
       <div className="flex-1">
         <h3
-          className="text-lg md:text-xl mb-2"
           style={{
             fontFamily: "var(--font-display)",
-            textTransform: "uppercase",
+            fontSize: "var(--text-h3)",
             color: "var(--paper)",
             fontWeight: 800,
-            lineHeight: 1,
+            lineHeight: 1.1,
+            letterSpacing: "-0.01em",
+            marginBottom: "var(--space-1)",
           }}
         >
           {name}
         </h3>
         <p
-          className="text-sm"
-          style={{ color: "var(--paper-dim)", lineHeight: 1.6 }}
+          style={{
+            color: "var(--paper-dim)",
+            fontSize: "0.875rem",
+            lineHeight: 1.7,
+          }}
         >
           {desc}
         </p>
       </div>
 
       <span
-        className="inline-block self-start px-3 py-1.5 text-[10px] tracking-[0.15em] uppercase whitespace-nowrap"
+        className="text-label inline-block self-start whitespace-nowrap"
         style={{
-          fontFamily: "var(--font-mono)",
-          background: "var(--ink-3)",
+          padding: "6px 12px",
+          background: "color-mix(in srgb, var(--ink-3) 80%, transparent)",
           color: "var(--teal)",
           borderRadius: "var(--radius-token)",
           border: "1px solid var(--line)",
+          fontSize: "10px",
+          letterSpacing: "0.15em",
         }}
       >
         {tag}

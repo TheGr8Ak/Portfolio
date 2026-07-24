@@ -1,6 +1,7 @@
 import { contact, brand } from "@/lib/content";
 import { SectionHead } from "@/components/section-head";
 import { useReveal } from "@/hooks/use-reveal";
+import { SectionGlow } from "@/components/section-glow";
 import { Mail, Phone } from "lucide-react";
 
 const Github = ({ size = 16 }: { size?: number }) => (
@@ -32,40 +33,77 @@ function getIcon(href: string) {
 }
 
 /**
- * Contact / Pit Lane section — heading, lead CTA, 4 contact links,
- * and a minimal footer.
+ * Contact / Pit Lane section — serif display heading, lead CTA, 4 contact
+ * links in a grid, and a minimal footer. Restructured to match the rest of
+ * the site with StageCanvas backdrop and editorial typography.
  */
 export function Contact() {
   const ref = useReveal<HTMLDivElement>();
 
   return (
-    <section id="contact">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-20">
-        <SectionHead
-          eyebrow={contact.eyebrow}
-          heading={contact.heading}
-          index="07"
-        />
-
-        <div ref={ref} className="max-w-2xl">
+    <section id="contact" style={{ background: "transparent" }}>
+      <SectionGlow index={7} />
+      <div className="container-section relative z-[2]">
+        {/* Serif display heading — matches hero name weight */}
+        <div style={{ marginBottom: "var(--space-8)" }}>
           <p
-            className="text-sm md:text-base mb-10"
-            style={{ color: "var(--paper-dim)", lineHeight: 1.7 }}
+            className="text-label"
+            style={{
+              color: "var(--paper-dim)",
+              marginBottom: "var(--space-2)",
+            }}
+          >
+            {contact.eyebrow}
+          </p>
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "var(--text-h2)",
+              color: "var(--paper)",
+              lineHeight: 0.95,
+              letterSpacing: "-0.02em",
+              fontWeight: 800,
+            }}
+          >
+            {contact.heading.map((line, i) => (
+              <span key={i} className="block">
+                {i === 1 ? (
+                  <span style={{ color: "var(--amber)" }}>{line}</span>
+                ) : (
+                  line
+                )}
+              </span>
+            ))}
+          </h2>
+        </div>
+
+        <div ref={ref} className="max-w-3xl">
+          <p
+            style={{
+              color: "var(--paper-dim)",
+              lineHeight: 1.7,
+              fontSize: "var(--text-body)",
+              marginBottom: "var(--space-6)",
+            }}
           >
             {contact.lead}
           </p>
 
-          {/* Contact links */}
-          <div className="grid sm:grid-cols-2 gap-4">
+          {/* Contact links — 2-column grid */}
+          <div
+            className="grid sm:grid-cols-2"
+            style={{ gap: "var(--space-2)" }}
+          >
             {contact.links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 target={link.href.startsWith("http") ? "_blank" : undefined}
                 rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="flex items-center gap-3 p-4 transition-colors duration-200 group"
+                className="flex items-center gap-3 transition-colors duration-200 group"
                 style={{
-                  background: "var(--ink-2)",
+                  padding: "var(--space-2)",
+                  background: "color-mix(in srgb, var(--ink-2) 80%, transparent)",
                   border: "1px solid var(--line)",
                   borderRadius: "var(--radius-token)",
                 }}
@@ -78,9 +116,10 @@ export function Contact() {
                   {getIcon(link.href)}
                 </span>
                 <span
-                  className="text-[13px] transition-colors duration-200 group-hover:text-amber"
+                  className="transition-colors duration-200 group-hover:text-amber"
                   style={{
                     fontFamily: "var(--font-mono)",
+                    fontSize: "0.8125rem",
                     color: "var(--paper)",
                   }}
                 >
@@ -93,24 +132,23 @@ export function Contact() {
 
         {/* Footer */}
         <div
-          className="mt-24 pt-8 flex flex-col sm:flex-row justify-between gap-4"
-          style={{ borderTop: "1px solid var(--line)" }}
+          className="flex flex-col sm:flex-row justify-between"
+          style={{
+            marginTop: "var(--space-16)",
+            paddingTop: "var(--space-4)",
+            gap: "var(--space-2)",
+            borderTop: "1px solid var(--line)",
+          }}
         >
           <span
-            className="text-[11px] tracking-[0.15em] uppercase"
-            style={{
-              fontFamily: "var(--font-mono)",
-              color: "var(--paper-dim)",
-            }}
+            className="text-label"
+            style={{ color: "var(--paper-dim)" }}
           >
             {brand.footerName}
           </span>
           <span
-            className="text-[11px] tracking-[0.15em] uppercase"
-            style={{
-              fontFamily: "var(--font-mono)",
-              color: "var(--paper-dim)",
-            }}
+            className="text-label"
+            style={{ color: "var(--paper-dim)" }}
           >
             {brand.footerNote}
           </span>

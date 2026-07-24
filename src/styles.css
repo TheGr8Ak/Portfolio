@@ -4,22 +4,33 @@
    become both var(--amber) and Tailwind utilities (bg-amber, text-amber, etc.)
    automatically. No separate tailwind.config.js color block needed. */
 
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800;900&family=Big+Shoulders+Display:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 /* ---------- design tokens ---------- */
 @theme {
-  --color-ink: #12151a;
-  --color-ink-2: #181d24;
-  --color-ink-3: #232933;
-  --color-line: #2b323c;
-  --color-paper: #ecedea;
+  /* Stage colors — near-black, not flat navy */
+  --color-bg-stage: #0A0B0D;
+  --color-bg-stage-alt: #0D0F12;
+
+  /* Surface / ink colors */
+  --color-ink: #0A0B0D;
+  --color-ink-2: #111316;
+  --color-ink-3: #1A1D22;
+  --color-line: #242830;
+
+  /* Text colors */
+  --color-paper: #F3F1EC;
   --color-paper-dim: #8f97a3;
+
+  /* Accents */
   --color-amber: #f2a83c;
   --color-amber-dim: #8a6a34;
   --color-teal: #4fd1c5;
 
-  --font-display: "Big Shoulders Display", sans-serif;
+  /* Typography */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-condensed: "Big Shoulders Display", sans-serif;
   --font-body: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
@@ -29,6 +40,8 @@
 /* Also expose as plain custom properties for non-Tailwind consumers
    (three.js material colors, inline styles, GSAP targets, etc.) */
 :root {
+  --bg-stage: var(--color-bg-stage);
+  --bg-stage-alt: var(--color-bg-stage-alt);
   --ink: var(--color-ink);
   --ink-2: var(--color-ink-2);
   --ink-3: var(--color-ink-3);
@@ -38,6 +51,27 @@
   --amber: var(--color-amber);
   --amber-dim: var(--color-amber-dim);
   --teal: var(--color-teal);
+
+  /* ---- Type scale ---- */
+  --text-label: 0.6875rem;      /* 11px */
+  --text-body: 1rem;            /* 16px */
+  --text-body-lg: 1.125rem;     /* 18px */
+  --text-h3: 1.75rem;           /* 28px */
+  --text-h2: clamp(2.25rem, 5vw, 4.5rem);
+  --text-h1: clamp(4rem, 9vw, 10rem);
+
+  /* ---- 8px spacing scale ---- */
+  --space-1: 0.5rem;   /* 8px */
+  --space-2: 1rem;     /* 16px */
+  --space-3: 1.5rem;   /* 24px */
+  --space-4: 2rem;     /* 32px */
+  --space-5: 2.5rem;   /* 40px */
+  --space-6: 3rem;     /* 48px */
+  --space-8: 4rem;     /* 64px */
+  --space-10: 5rem;    /* 80px */
+  --space-12: 6rem;    /* 96px */
+  --space-16: 8rem;    /* 128px */
+  --space-20: 10rem;   /* 160px */
 }
 
 /* ---------- resets ---------- */
@@ -54,7 +88,7 @@ html {
 }
 
 body {
-  background: var(--ink);
+  background: var(--bg-stage);
   color: var(--paper);
   font-family: var(--font-body);
   font-size: 16px;
@@ -88,19 +122,55 @@ img {
   display: block;
 }
 
+/* ---------- typography system ---------- */
 h1,
 h2,
 h3,
 .display {
   font-family: var(--font-display);
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
   font-weight: 800;
-  line-height: 0.92;
+  line-height: 0.95;
 }
 
 .mono {
   font-family: var(--font-mono);
+}
+
+/* Utility class: tracked uppercase label (eyebrows, metadata, tags) */
+.text-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* Utility class: condensed numeral (stat callouts, index numbers) */
+.text-numeral {
+  font-family: var(--font-condensed);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* Shared content container — every section uses this */
+.container-section {
+  max-width: 87.5rem; /* 1400px */
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-section {
+    padding-inline: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-section {
+    padding-inline: 5rem;
+  }
 }
 
 /* ---------- focus states ---------- */
@@ -124,32 +194,52 @@ h3,
 }
 
 /* ---------- section rhythm ---------- */
-/* Shared vertical rhythm for the one-page layout. Individual sections can
-   still override via Tailwind classes; these are sane page-wide defaults. */
+/* Shared vertical rhythm for the one-page layout. */
 section {
   position: relative;
-  padding-block: 150px;
-  border-bottom: 1px solid var(--line);
+  padding-block: var(--space-20);
+  background: var(--bg-stage);
 }
 
-section:last-of-type {
-  border-bottom: none;
+section:nth-of-type(even) {
+  background: var(--bg-stage-alt);
+}
+
+/* Subtle top border between sections for scroll-position feedback */
+section + section {
+  border-top: 1px solid var(--line);
 }
 
 @media (max-width: 720px) {
   section {
-    padding-block: 96px;
+    padding-block: var(--space-12);
   }
 }
 
 /* ---------- reveal animation classes ---------- */
 .reveal-hidden {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .reveal-visible {
   opacity: 1;
   transform: none;
+}
+
+/* ---------- reduced-motion 3D fallback ---------- */
+/* When 3D canvas is skipped, body gets a subtle gradient for depth */
+body.no-canvas::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 30%,
+    color-mix(in srgb, var(--amber) 4%, transparent),
+    transparent 70%
+  );
 }
