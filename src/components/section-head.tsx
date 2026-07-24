@@ -52,9 +52,9 @@ export function SectionHead({ eyebrow, heading, index }: SectionHeadProps) {
               style={{
                 fontFamily: "var(--font-condensed)",
                 fontSize: "clamp(5rem, 8vw, 7.5rem)",
-                color: "var(--ink-3)",
+                color: "#DDD3BC",
                 lineHeight: 0.8,
-                opacity: 0.6,
+                opacity: 0.7,
               }}
               aria-hidden="true"
             >

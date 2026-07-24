@@ -14,7 +14,7 @@ export const hero = {
   tagline:
     "Building agentic AI systems, computer-vision pipelines, and the occasional race-weekend prediction model — engineered for accuracy and shipped without dropped frames.",
   stats: [
-    { n: "8.13", l: "CGPA · B.E. AIML" },
+    { n: "8.13", l: "CGPA · B.E. CSE(AIML)" },
     { n: "4", l: "SHIPPED PROJECTS" },
     { n: "96%", l: "TOP MODEL ACCURACY" },
     { n: "2×", l: "GENAI INTERNSHIPS" },
@@ -31,13 +31,13 @@ export const about = {
   eyebrow: "01 / ABOUT",
   heading: ["Off the grid,", "into the build."],
   paragraphs: [
-    "I'm a final-year Computer Science Engineering student at APSIT, University of Mumbai, specializing in Artificial Intelligence & Machine Learning. I like problems with a real person on the other end of them — an intake form that shouldn't overwhelm an autistic patient, a sign-language gesture that deserves a fast and correct translation, a race weekend where the model has to be right before lights out.",
-    "Most recently I've been deep in agentic AI — orchestrating multiple specialized agents that hand work off to each other cleanly — after internships at CitiusTech and Wipro (ABB). Outside of the stack, I hold a 2nd Dan black belt in Karate, sing Hindustani classical at Gandharva Level 3, and never miss a Grand Prix.",
+    "I graduated in May 2026 with a B.E. in Computer Science Engineering (Artificial Intelligence & Machine Learning) from APSIT, University of Mumbai. I like to vibe-code my way through problems — building projects that either solve something affecting me directly or push me to pick up a new AI concept along the way.",
+    "Most recently, I've been diving into Agentic AI — figuring out how to get multiple specialized agents to hand off work cleanly to each other, through hands-on stints at CitiusTech and Wipro (ABB). Outside of the stack, I hold a 2nd Dan black belt in Karate, a Gandharva Level 3 certification in Hindustani classical music, and I'm a distance runner who enjoys long runs. I also dance, and performed at my college's annual fest.",
   ],
   driverCard: [
     { k: "Base", v: "Mumbai, IN" },
-    { k: "Focus", v: "Agentic AI / CV" },
-    { k: "Education", v: "B.E. CSE (AIML)" },
+    { k: "Focus", v: "AI/ML" },
+    { k: "Education", v: "B.E. CSE(AIML)" },
     { k: "Grad. Year", v: "2026" },
     { k: "Status", v: "OPEN TO ROLES", accent: true },
   ] satisfies DriverCardRow[],
@@ -100,7 +100,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     num: "01",
-    title: "Patient Intake, Agentic",
+    title: "Patient Intake System Using Agentic AI",
     description:
       "Accessible intake system for individuals with autism — adaptive Q&A that lowers cognitive load during onboarding.",
     tags: ["LangChain", "Multi-Agent", "Orchestration"],
@@ -126,7 +126,7 @@ export const projects: Project[] = [
   },
   {
     num: "03",
-    title: "F1 GP Winner Prediction",
+    title: "F1 Race Predictor",
     description:
       "Live predictive platform for race weekends, unifying telemetry, weather, and historical form into one signal.",
     tags: ["FastF1 API", "XGBoost", "Ensemble"],
@@ -139,7 +139,7 @@ export const projects: Project[] = [
   },
   {
     num: "04",
-    title: "AgriGenius",
+    title: "AgriGenius Plant Disease Detection Using RAG",
     description:
       "Plant disease detection paired with a retrieval-augmented chatbot for treatment guidance.",
     tags: ["ResNet CNN", "RAG", "FAISS"],
@@ -223,10 +223,10 @@ export interface Certification {
 
 export const certifications: Certification[] = [
   { name: "Generative AI with Diffusion Models", by: "NVIDIA" },
+  { name: "Getting Started with Deep Learning", by: "NVIDIA" },
   { name: "AIML Virtual Internship", by: "Google" },
   { name: "Data Engineering Virtual Internship", by: "AWS" },
   { name: "AIML Virtual Internship", by: "AWS" },
-  { name: "Getting Started with Deep Learning", by: "NVIDIA" },
   { name: "Supervised Machine Learning", by: "Coursera / Andrew Ng" },
   { name: "AIML for Geodata Analysis", by: "ISRO" },
   { name: "Nexthink NQL Practitioner", by: "Nexthink" },
@@ -268,9 +268,9 @@ export const sectors: SectorEntry[] = [
 ];
 
 export const brand = {
-  mark: "AK",
-  suffix: "_26",
-  tag: "/ AIML PORTFOLIO",
+  mark: "Aaryaman Kattali",
+  suffix: "",
+  tag: " PORTFOLIO",
   footerName: "© 2026 AARYAMAN KATTALI",
   footerNote: "BUILT WITH PURPOSE IN MUMBAI",
 };

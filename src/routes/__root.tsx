@@ -48,7 +48,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <LenisProvider>
           {/* Site-wide 3D backdrop — fixed behind all content */}
-          <StageCanvas />
+          {/*<StageCanvas />*/}
           <Cursor />
           <ProgressBar />
           <CornerFrame />

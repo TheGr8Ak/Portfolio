@@ -24,7 +24,7 @@ function StageObject() {
   const material = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#171512"),
+        color: new THREE.Color("#09bee3ff"),
         metalness: 0.5,
         roughness: 0.35,
       }),
